@@ -1,0 +1,61 @@
+<!--
+ * @LastEditors: Yx
+ * @LastEditTime: 2022-06-24 14:23:45
+ * @Description: 
+ * @Author: Yx
+ * @Date: 2022-06-24 10:45:12
+ * @FilePath: \learningTestCases\JS\闭包\防抖中，闭包优点的体现.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>防抖中，闭包优点的体现</title>
+  </head>
+  <body>
+    不用防抖：<input type="text" id="root" />
+    <br />
+    使用防抖：<input type="text" id="root1" />
+    <script>
+      const text1 = document.getElementById("root");
+      const text2 = document.getElementById("root1");
+      text1.addEventListener("input", function (e) {
+        console.log(
+          "🚀 ~ file: 防抖中，闭包优点的体现.html ~ line 27 ~ text1.addEventListener ~ e",
+          e.target.value
+        );
+      });
+
+      /**
+       * 概念：
+       * 思路：
+       */
+      function debounce(fn, delay) {
+        let time = null;
+        return function () {
+          let context = this,
+            args = arguments;
+          if (time) {
+            clearTimeout(time);
+            // 思考题，这里要不要清空 time
+            // time = null
+          }
+          time = setTimeout(function () {
+            fn.apply(context, args);
+          }, delay);
+        };
+      }
+
+      function ajax(content) {
+        console.log(content);
+      }
+
+      const textFn = debounce(ajax, 500);
+      text2.addEventListener("input", function (e) {
+        textFn(e.target.value);
+      });
+    </script>
+  </body>
+</html>
